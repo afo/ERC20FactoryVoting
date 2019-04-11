@@ -26,10 +26,10 @@ contract DappToken {
         name = _name;
         symbol = _symbol;
         standard = _standard;
-        balanceOf[msg.sender] = _initialSupply;
+        balanceOf[tx.origin] = _initialSupply;
         totalSupply = _initialSupply;
         tokenPrice = _tokenPrice;
-        _owner = msg.sender;
+        _owner = tx.origin;
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
@@ -238,4 +238,17 @@ function showwinners()public view returns(address[]) {
   return winnerslist;
 }
 
+}
+
+contract Factory {
+  address public temp;
+
+  function view_con_add() public view returns(address) {
+    return temp;
+  }
+
+  function make(string __name, string __symbol, string __standard, uint256 __totalSupply, uint256 __tokenPrice ) public {
+    DappToken d = new DappToken(__name,__symbol,__standard,__totalSupply,__tokenPrice);
+    temp=address(d);
+  }
 }
